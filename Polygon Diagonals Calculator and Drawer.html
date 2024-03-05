@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Polygon Diagonals Calculator and Drawer</title>
+  <script>
+    function calculateDiagonals() {
+      var n = parseInt(document.getElementById("numSides").value);
+      var diagonals = (n * (n - 3)) / 2;
+      document.getElementById("result").innerHTML = n + " भुजाओं के बहुभुज के लिए विकर्णों की संख्या = " + diagonals;
+
+      // Call drawPolygon function
+      drawPolygon();
+    }
+
+    function drawPolygon() {
+      const numSides = parseInt(document.getElementById('numSides').value);
+      const svg = document.getElementById('svg');
+      const svgNS = "http://www.w3.org/2000/svg";
+
+      while (svg.firstChild) {
+        svg.firstChild.remove();
+      }
+
+      const centerX = 250;
+      const centerY = 250;
+      const radius = 100;
+      const angle = (2 * Math.PI) / numSides;
+
+      for (let i = 0; i < numSides; i++) {
+        const x1 = centerX + radius * Math.cos(i * angle);
+        const y1 = centerY + radius * Math.sin(i * angle);
+
+        for (let j = i+1; j < numSides; j++) {
+          const x2 = centerX + radius * Math.cos(j * angle);
+          const y2 = centerY + radius * Math.sin(j * angle);
+
+          const line = document.createElementNS(svgNS, 'line');
+          line.setAttribute('x1', x1);
+          line.setAttribute('y1', y1);
+          line.setAttribute('x2', x2);
+          line.setAttribute('y2', y2);
+          line.setAttribute('stroke', 'black');
+          line.setAttribute('stroke-width', '1');
+
+          svg.appendChild(line);
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+	<!--
+	<style>
+            .dark-mode {
+                background-color: black;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <button onclick="darkmode()">Dark/Light mode</button>
+
+        <script>
+            function darkmode() {
+                var element = document.body;
+                element.classList.toggle("dark-mode");
+            }
+        </script>
+	-->
+
+  <h1></h1>
+  <label for="numSides">भुजाओं की संख्या दर्ज करें:</label>
+  <input type="text" id="numSides"><br><br>
+  <button onclick="calculateDiagonals()">गणना और चित्रण</button>
+  <div id="result"></div>
+  <br>
+  <svg id="svg" width="500" height="500"></svg>
+</body>
+</html>
